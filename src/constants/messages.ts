@@ -3,9 +3,12 @@ import { ItemStatus } from './item';
 
 export const PAGE_MESSAGES = {
   homeEmpty: '暂时没有符合条件的闲置物品',
+  homeMatchEmpty: '暂时没有双向匹配的物品，去个人中心补充期望分类试试',
+  homeMatchHint: '在个人中心设置期望分类后，这里会列出与你需求互补的在架物品',
   publishReady: '发布后会同步写入 localStorage 和 IndexedDB',
   exchangeEmpty: '还没有交换请求，先去首页挑一件合眼缘的物品',
   profileUpdated: '个人资料已更新',
+  desiredCategoriesUpdated: '想换分类已更新，首页匹配结果已同步',
 };
 
 export const FORM_MESSAGES = {
@@ -13,6 +16,7 @@ export const FORM_MESSAGES = {
   requiredDescription: '请描述你希望交换的物品',
   requiredPhone: '请填写联系方式',
   imageLimit: '最多上传 4 张图片',
+  desiredCategoryLimit: '想换分类最多选择 3 个',
   exchangeNeedOwnItem: '请先发布一件可交换物品',
 };
 

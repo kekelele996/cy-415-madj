@@ -30,6 +30,10 @@
           常用地点
           <input v-model="form.location" />
         </label>
+        <label>
+          期望分类（最多 3 个，用于首页双向匹配）
+          <CategoryMultiPicker v-model="form.desired_categories" />
+        </label>
         <button class="primary-button" type="submit">保存资料</button>
       </form>
 
@@ -62,6 +66,7 @@
 import { computed, reactive, ref, watch, watchEffect } from 'vue';
 
 import AvatarUploader from '@/components/common/AvatarUploader.vue';
+import CategoryMultiPicker from '@/components/common/CategoryMultiPicker.vue';
 import EmptyState from '@/components/common/EmptyState.vue';
 import ItemCard from '@/components/common/ItemCard.vue';
 import UserBrief from '@/components/common/UserBrief.vue';
@@ -78,6 +83,7 @@ const form = reactive({
   avatar: '',
   phone: '',
   location: '',
+  desired_categories: [] as string[],
 });
 
 watchEffect(() => {
@@ -87,6 +93,7 @@ watchEffect(() => {
     form.avatar = currentUser.value.avatar;
     form.phone = currentUser.value.phone;
     form.location = currentUser.value.location;
+    form.desired_categories = [...currentUser.value.desired_categories];
   }
 });
 

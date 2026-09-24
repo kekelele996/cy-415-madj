@@ -4,6 +4,7 @@ export interface User {
   avatar: string;
   phone: string;
   location: string;
+  desired_categories: string[];
   credit_score: number;
   created_at: string;
 }

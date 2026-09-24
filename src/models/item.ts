@@ -6,6 +6,7 @@ export interface Item {
   title: string;
   description: string;
   category: string;
+  desired_categories: string[];
   condition: ItemCondition;
   images: string[];
   status: ItemStatus;

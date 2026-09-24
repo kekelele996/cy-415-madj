@@ -8,6 +8,19 @@
       </div>
       <h3>{{ item.title }}</h3>
       <p>{{ item.description }}</p>
+      <div v-if="item.desired_categories.length" class="desired-row">
+        <span
+          v-for="category in item.desired_categories"
+          :key="category"
+          class="pill"
+          :class="{ 'pill--common': commonCategories.includes(category) }"
+        >
+          想换 {{ category }}
+        </span>
+      </div>
+      <p v-if="commonCategories.length" class="match-note">
+        共同期望 {{ commonCategories.length }} 类：{{ commonCategories.join('、') }}
+      </p>
       <div class="item-card__meta">
         <span>{{ item.location }}</span>
         <span>{{ formatCondition(item.condition) }}</span>
@@ -32,10 +45,16 @@ import { formatCondition, formatItemStatus, statusToneClass } from '@/utils/form
 
 import ItemImageGallery from './ItemImageGallery.vue';
 
-const props = defineProps<{
-  item: Item;
-  owner?: User;
-}>();
+const props = withDefaults(
+  defineProps<{
+    item: Item;
+    owner?: User;
+    commonCategories?: string[];
+  }>(),
+  {
+    commonCategories: () => [],
+  },
+);
 
 const authStore = useAuthStore();
 useThemeStore();

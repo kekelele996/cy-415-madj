@@ -21,6 +21,10 @@
         <CategoryFilter v-model="form.category" :categories="publishCategories" />
       </label>
       <label>
+        想换分类（最多 3 个）
+        <CategoryMultiPicker v-model="form.desired_categories" :categories="publishCategories" />
+      </label>
+      <label>
         成色
         <select v-model="form.condition">
           <option v-for="option in ITEM_CONDITION_OPTIONS" :key="option.value" :value="option.value">
@@ -44,6 +48,7 @@ import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
 import CategoryFilter from '@/components/common/CategoryFilter.vue';
+import CategoryMultiPicker from '@/components/common/CategoryMultiPicker.vue';
 import ImageUploader from '@/components/common/ImageUploader.vue';
 import { ITEM_CATEGORIES, ITEM_CONDITION_OPTIONS, ItemCondition, ItemStatus } from '@/constants/item';
 import { PAGE_MESSAGES } from '@/constants/messages';
@@ -59,6 +64,7 @@ const form = reactive({
   title: '',
   description: '',
   category: '数码',
+  desired_categories: [] as string[],
   condition: ItemCondition.GOOD,
   images: [] as string[],
   location: authStore.currentUser?.location ?? '上海 · 徐汇',
@@ -72,6 +78,7 @@ const submit = async () => {
     title: form.title,
     description: form.description,
     category: form.category,
+    desired_categories: form.desired_categories,
     condition: form.condition,
     images: form.images,
     location: form.location,

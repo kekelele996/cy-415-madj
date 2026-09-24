@@ -1,9 +1,15 @@
 import type { ExchangeStatus } from '@/constants/exchange';
 import type { ItemCondition, ItemStatus } from '@/constants/item';
+import type { Item } from '@/models/item';
 
 export interface Option<T extends string> {
   label: string;
   value: T;
+}
+
+export interface MatchedItem {
+  item: Item;
+  commonCategories: string[];
 }
 
 export interface PersistedEnvelope<T> {

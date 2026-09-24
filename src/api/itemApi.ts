@@ -10,6 +10,7 @@ const seedItems: Item[] = [
     title: '富士拍立得 Mini 旧机',
     description: '成色干净，附一包相纸，想换小型蓝牙音箱或桌面灯。',
     category: '数码',
+    desired_categories: ['家居', '数码'],
     condition: ItemCondition.GOOD,
     images: [],
     status: ItemStatus.AVAILABLE,
@@ -22,6 +23,7 @@ const seedItems: Item[] = [
     title: '设计与产品书 6 本',
     description: '搬家清书柜，适合产品/视觉入门，接受换绿植、咖啡器具。',
     category: '书籍',
+    desired_categories: ['家居', '其他'],
     condition: ItemCondition.LIKE_NEW,
     images: [],
     status: ItemStatus.AVAILABLE,
@@ -34,6 +36,7 @@ const seedItems: Item[] = [
     title: '可折叠露营椅',
     description: '去年买的，露营两次，有轻微使用痕迹，想换收纳盒。',
     category: '运动',
+    desired_categories: ['家居'],
     condition: ItemCondition.GOOD,
     images: [],
     status: ItemStatus.AVAILABLE,
@@ -46,6 +49,7 @@ const seedItems: Item[] = [
     title: '木质小夜灯',
     description: '暖光，适合床头。已完成交换，保留记录用于状态展示。',
     category: '家居',
+    desired_categories: ['书籍'],
     condition: ItemCondition.LIKE_NEW,
     images: [],
     status: ItemStatus.EXCHANGED,
@@ -54,10 +58,15 @@ const seedItems: Item[] = [
   },
 ];
 
+const normalizeItem = (item: Item): Item => ({
+  ...item,
+  desired_categories: Array.isArray(item.desired_categories) ? item.desired_categories : [],
+});
+
 export const itemApi = {
   async list(): Promise<Item[]> {
     const items = await storage.get<Item[]>(STORAGE_KEYS.items, []);
-    if (items.length) return items;
+    if (items.length) return items.map(normalizeItem);
     await storage.set(STORAGE_KEYS.items, seedItems);
     return seedItems;
   },

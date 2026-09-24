@@ -12,6 +12,11 @@
         </div>
         <h1>{{ item.title }}</h1>
         <p>{{ item.description }}</p>
+        <div v-if="item.desired_categories.length" class="desired-row">
+          <span v-for="category in item.desired_categories" :key="category" class="pill">
+            想换 {{ category }}
+          </span>
+        </div>
         <dl class="detail-list">
           <div>
             <dt>成色</dt>
@@ -46,9 +51,20 @@
             发起交换
           </button>
         </div>
-        <button v-else-if="item.status === ItemStatus.AVAILABLE" class="secondary-button" type="button" @click="offlineItem">
-          下架这件物品
-        </button>
+        <template v-else-if="item.status === ItemStatus.AVAILABLE">
+          <div class="exchange-box">
+            <label>
+              想换分类（最多 3 个）
+              <CategoryMultiPicker v-model="desiredDraft" />
+            </label>
+            <button class="secondary-button" type="button" @click="saveDesiredCategories">
+              更新想换分类
+            </button>
+          </div>
+          <button class="secondary-button" type="button" @click="offlineItem">
+            下架这件物品
+          </button>
+        </template>
       </article>
     </div>
   </section>
@@ -56,9 +72,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 
+import CategoryMultiPicker from '@/components/common/CategoryMultiPicker.vue';
 import EmptyState from '@/components/common/EmptyState.vue';
 import ItemImageGallery from '@/components/common/ItemImageGallery.vue';
 import UserBrief from '@/components/common/UserBrief.vue';
@@ -83,6 +100,20 @@ const ownAvailableItems = computed(() =>
 );
 const selectedItemId = ref('');
 const messageText = ref('我想用这件闲置与你交换，可以沟通时间和地点。');
+const desiredDraft = ref<string[]>([]);
+
+watch(
+  item,
+  (value) => {
+    desiredDraft.value = value ? [...value.desired_categories] : [];
+  },
+  { immediate: true },
+);
+
+const saveDesiredCategories = async () => {
+  if (!item.value) return;
+  await itemStore.updateDesiredCategories(item.value.id, desiredDraft.value);
+};
 
 const requestExchange = async () => {
   if (!authStore.currentUser || !item.value || !owner.value) return;

@@ -9,6 +9,7 @@ const seedUsers: User[] = [
     avatar: '',
     phone: '13800000001',
     location: '上海 · 徐汇',
+    desired_categories: ['家居', '数码'],
     credit_score: 92,
     created_at: new Date().toISOString(),
   },
@@ -18,6 +19,7 @@ const seedUsers: User[] = [
     avatar: '',
     phone: '13800000002',
     location: '杭州 · 西湖',
+    desired_categories: ['书籍', '运动'],
     credit_score: 86,
     created_at: new Date().toISOString(),
   },
@@ -27,15 +29,21 @@ const seedUsers: User[] = [
     avatar: '',
     phone: '13800000003',
     location: '苏州 · 工业园',
+    desired_categories: ['数码', '玩具'],
     credit_score: 78,
     created_at: new Date().toISOString(),
   },
 ];
 
+const normalizeUser = (user: User): User => ({
+  ...user,
+  desired_categories: Array.isArray(user.desired_categories) ? user.desired_categories : [],
+});
+
 export const userApi = {
   async list(): Promise<User[]> {
     const users = await storage.get<User[]>(STORAGE_KEYS.users, []);
-    if (users.length) return users;
+    if (users.length) return users.map(normalizeUser);
     await storage.set(STORAGE_KEYS.users, seedUsers);
     await storage.set(STORAGE_KEYS.currentUserId, seedUsers[0].id);
     return seedUsers;
