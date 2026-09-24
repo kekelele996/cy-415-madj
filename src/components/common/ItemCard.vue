@@ -8,6 +8,18 @@
       </div>
       <h3>{{ item.title }}</h3>
       <p>{{ item.description }}</p>
+      <div v-if="item.wanted_categories.length" class="item-card__wanted">
+        <span class="wanted-label">想换</span>
+        <span v-for="category in item.wanted_categories" :key="category" class="wanted-pill">
+          {{ category }}
+        </span>
+      </div>
+      <div v-if="matchedCategories?.length" class="item-card__matched">
+        <span class="matched-label">共同想换 {{ matchedCategories.length }} 类</span>
+        <span v-for="category in matchedCategories" :key="category" class="wanted-pill wanted-pill--hit">
+          {{ category }}
+        </span>
+      </div>
       <div class="item-card__meta">
         <span>{{ item.location }}</span>
         <span>{{ formatCondition(item.condition) }}</span>
@@ -35,6 +47,7 @@ import ItemImageGallery from './ItemImageGallery.vue';
 const props = defineProps<{
   item: Item;
   owner?: User;
+  matchedCategories?: string[];
 }>();
 
 const authStore = useAuthStore();

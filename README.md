@@ -14,11 +14,23 @@ ReSwap 是一个纯前端以物换物 Web 应用。用户可以本地模拟登�
 ## 主要功能
 
 - 首页瀑布流浏览、分类筛选、关键词搜索。
+- 首页“双向匹配”专区：自动列出双方期望互补的在架物品（规则见下文）。
+- 发布物品时可选最多 3 个“想换分类”，物品详情页支持物主随时修改。
+- 个人中心可保存最多 3 个“期望分类”，与物品想换分类共同参与匹配。
 - 物品详情、物主资料、选择自己的物品发起交换。
 - 发布物品，支持本地 base64 图片上传、分类和成色选择。
 - 交换管理，区分我发起的和我收到的请求，支持同意、拒绝、完成。
 - 个人中心，编辑资料、上传头像、查看我发布的物品。
 - 主题切换、全局错误处理和 Vant 提示。
+
+## 双向匹配规则
+
+- 我的期望：个人中心保存的“期望分类”。
+- 物主期望：该物品的“想换分类” ∪ 物主个人资料里的“期望分类”。
+- 两边集合有交集即进入首页匹配区；排除本人发布、已交换、已下架的物品。
+- 排序：共同分类数从多到少，相同则发布时间新的在前。
+- 匹配区出现的物品不再进入普通瀑布流；任一方修改分类后，匹配区与普通列表自动同步。
+- 旧数据没有分类字段，读取时自动补空数组，照常浏览，只是不参与匹配。
 
 ## 启动与构建
 
@@ -53,7 +65,7 @@ src/
 ├── stores/           # authStore.ts, itemStore.ts, exchangeStore.ts, themeStore.ts
 ├── models/           # user.ts, item.ts, exchange.ts：独立数据模型
 ├── types/            # 共享类型补充
-├── components/common/# 共享业务组件和 GlobalErrorBoundary
+├── components/common/# 共享业务组件（含 WantedCategoryPicker 想换分类多选）和 GlobalErrorBoundary
 ├── hooks/            # useAuth.ts, useLocalStorage.ts, useExchangeStats.ts
 ├── pages/            # Home, ItemDetail, Publish, Exchanges, Profile
 ├── router/           # index.ts + guards.ts

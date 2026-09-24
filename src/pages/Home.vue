@@ -13,9 +13,25 @@
       <CategoryFilter v-model="itemStore.category" />
     </div>
 
-    <div v-if="itemStore.visibleItems.length" class="waterfall">
+    <section v-if="itemStore.mutualMatches.length" class="match-section">
+      <div class="match-section__heading">
+        <h2>双向匹配</h2>
+        <p>{{ PAGE_MESSAGES.matchSectionHint }}</p>
+      </div>
+      <div class="waterfall">
+        <ItemCard
+          v-for="match in itemStore.mutualMatches"
+          :key="match.item.id"
+          :item="match.item"
+          :owner="ownerOf(match.item.user_id)"
+          :matched-categories="match.commonCategories"
+        />
+      </div>
+    </section>
+
+    <div v-if="itemStore.regularItems.length" class="waterfall">
       <ItemCard
-        v-for="item in itemStore.visibleItems"
+        v-for="item in itemStore.regularItems"
         :key="item.id"
         :item="item"
         :owner="ownerOf(item.user_id)"

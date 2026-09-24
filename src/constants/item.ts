@@ -26,6 +26,10 @@ export const ITEM_CONDITION_OPTIONS = [
 
 export const ITEM_CATEGORIES = ['全部', '数码', '书籍', '家居', '服饰', '运动', '玩具', '其他'];
 
+export const WANTED_CATEGORY_LIMIT = 3;
+
+export const WANTED_CATEGORY_OPTIONS = ITEM_CATEGORIES.filter((category) => category !== '全部');
+
 export const ITEM_STORAGE_HINTS = {
   statusKey: 'reswap:items',
   statusTouchedBy: ['models/item.ts', 'stores/itemStore.ts', 'components/common/ItemCard.vue', 'pages/ItemDetail.vue'],

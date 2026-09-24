@@ -14,6 +14,7 @@ const seedItems: Item[] = [
     images: [],
     status: ItemStatus.AVAILABLE,
     location: '杭州 · 西湖',
+    wanted_categories: ['运动', '家居'],
     created_at: new Date().toISOString(),
   },
   {
@@ -26,6 +27,7 @@ const seedItems: Item[] = [
     images: [],
     status: ItemStatus.AVAILABLE,
     location: '苏州 · 工业园',
+    wanted_categories: ['家居', '数码'],
     created_at: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString(),
   },
   {
@@ -38,6 +40,7 @@ const seedItems: Item[] = [
     images: [],
     status: ItemStatus.AVAILABLE,
     location: '上海 · 徐汇',
+    wanted_categories: ['书籍'],
     created_at: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(),
   },
   {
@@ -50,14 +53,20 @@ const seedItems: Item[] = [
     images: [],
     status: ItemStatus.EXCHANGED,
     location: '杭州 · 西湖',
+    wanted_categories: ['数码'],
     created_at: new Date(Date.now() - 1000 * 60 * 60 * 90).toISOString(),
   },
 ];
 
+const normalizeItem = (item: Item): Item => ({
+  ...item,
+  wanted_categories: Array.isArray(item.wanted_categories) ? item.wanted_categories : [],
+});
+
 export const itemApi = {
   async list(): Promise<Item[]> {
     const items = await storage.get<Item[]>(STORAGE_KEYS.items, []);
-    if (items.length) return items;
+    if (items.length) return items.map(normalizeItem);
     await storage.set(STORAGE_KEYS.items, seedItems);
     return seedItems;
   },

@@ -30,6 +30,10 @@
           常用地点
           <input v-model="form.location" />
         </label>
+        <label>
+          期望分类（最多 {{ WANTED_CATEGORY_LIMIT }} 个）
+          <WantedCategoryPicker v-model="form.wanted_categories" />
+        </label>
         <button class="primary-button" type="submit">保存资料</button>
       </form>
 
@@ -65,7 +69,8 @@ import AvatarUploader from '@/components/common/AvatarUploader.vue';
 import EmptyState from '@/components/common/EmptyState.vue';
 import ItemCard from '@/components/common/ItemCard.vue';
 import UserBrief from '@/components/common/UserBrief.vue';
-import { ItemStatus } from '@/constants/item';
+import WantedCategoryPicker from '@/components/common/WantedCategoryPicker.vue';
+import { ItemStatus, WANTED_CATEGORY_LIMIT } from '@/constants/item';
 import { useAuth } from '@/hooks/useAuth';
 import { useItemStore } from '@/stores/itemStore';
 
@@ -78,6 +83,7 @@ const form = reactive({
   avatar: '',
   phone: '',
   location: '',
+  wanted_categories: [] as string[],
 });
 
 watchEffect(() => {
@@ -87,6 +93,7 @@ watchEffect(() => {
     form.avatar = currentUser.value.avatar;
     form.phone = currentUser.value.phone;
     form.location = currentUser.value.location;
+    form.wanted_categories = [...currentUser.value.wanted_categories];
   }
 });
 

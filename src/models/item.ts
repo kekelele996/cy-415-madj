@@ -10,6 +10,7 @@ export interface Item {
   images: string[];
   status: ItemStatus;
   location: string;
+  wanted_categories: string[];
   created_at: string;
 }
 

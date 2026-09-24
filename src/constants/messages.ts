@@ -6,6 +6,8 @@ export const PAGE_MESSAGES = {
   publishReady: '发布后会同步写入 localStorage 和 IndexedDB',
   exchangeEmpty: '还没有交换请求，先去首页挑一件合眼缘的物品',
   profileUpdated: '个人资料已更新',
+  wantedUpdated: '想换分类已更新，首页双向匹配已同步',
+  matchSectionHint: '你的期望与物主期望有交集的在架物品，按共同分类数排序',
 };
 
 export const FORM_MESSAGES = {
@@ -14,6 +16,7 @@ export const FORM_MESSAGES = {
   requiredPhone: '请填写联系方式',
   imageLimit: '最多上传 4 张图片',
   exchangeNeedOwnItem: '请先发布一件可交换物品',
+  wantedLimit: '最多选择 3 个分类',
 };
 
 export const LOG_MESSAGES = {

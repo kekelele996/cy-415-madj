@@ -5,6 +5,7 @@ export interface User {
   phone: string;
   location: string;
   credit_score: number;
+  wanted_categories: string[];
   created_at: string;
 }
 

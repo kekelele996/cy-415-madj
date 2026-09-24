@@ -14,11 +14,15 @@
       </label>
       <label>
         物品描述
-        <textarea v-model="form.description" rows="4" placeholder="写明瑕疵、期望交换的品类和取货方式" />
+        <textarea v-model="form.description" rows="4" placeholder="写明瑕疵、取货方式等细节" />
       </label>
       <label>
         分类
         <CategoryFilter v-model="form.category" :categories="publishCategories" />
+      </label>
+      <label>
+        想换分类（最多 {{ WANTED_CATEGORY_LIMIT }} 个）
+        <WantedCategoryPicker v-model="form.wanted_categories" />
       </label>
       <label>
         成色
@@ -45,7 +49,14 @@ import { useRouter } from 'vue-router';
 
 import CategoryFilter from '@/components/common/CategoryFilter.vue';
 import ImageUploader from '@/components/common/ImageUploader.vue';
-import { ITEM_CATEGORIES, ITEM_CONDITION_OPTIONS, ItemCondition, ItemStatus } from '@/constants/item';
+import WantedCategoryPicker from '@/components/common/WantedCategoryPicker.vue';
+import {
+  ITEM_CATEGORIES,
+  ITEM_CONDITION_OPTIONS,
+  ItemCondition,
+  ItemStatus,
+  WANTED_CATEGORY_LIMIT,
+} from '@/constants/item';
 import { PAGE_MESSAGES } from '@/constants/messages';
 import { useAuthStore } from '@/stores/authStore';
 import { useItemStore } from '@/stores/itemStore';
@@ -62,6 +73,7 @@ const form = reactive({
   condition: ItemCondition.GOOD,
   images: [] as string[],
   location: authStore.currentUser?.location ?? '上海 · 徐汇',
+  wanted_categories: [] as string[],
   status: ItemStatus.AVAILABLE,
 });
 
@@ -75,6 +87,7 @@ const submit = async () => {
     condition: form.condition,
     images: form.images,
     location: form.location,
+    wanted_categories: form.wanted_categories,
     status: ItemStatus.AVAILABLE,
   });
   if (item) {

@@ -12,6 +12,12 @@
         </div>
         <h1>{{ item.title }}</h1>
         <p>{{ item.description }}</p>
+        <div v-if="item.wanted_categories.length" class="detail-wanted">
+          <span class="wanted-label">物主想换</span>
+          <span v-for="category in item.wanted_categories" :key="category" class="wanted-pill">
+            {{ category }}
+          </span>
+        </div>
         <dl class="detail-list">
           <div>
             <dt>成色</dt>
@@ -46,9 +52,14 @@
             发起交换
           </button>
         </div>
-        <button v-else-if="item.status === ItemStatus.AVAILABLE" class="secondary-button" type="button" @click="offlineItem">
-          下架这件物品
-        </button>
+        <div v-else-if="item.status === ItemStatus.AVAILABLE" class="exchange-box">
+          <label>
+            想换分类（最多 {{ WANTED_CATEGORY_LIMIT }} 个）
+            <WantedCategoryPicker v-model="wantedDraft" />
+          </label>
+          <button class="secondary-button" type="button" @click="saveWanted">保存想换分类</button>
+          <button class="secondary-button" type="button" @click="offlineItem">下架这件物品</button>
+        </div>
       </article>
     </div>
   </section>
@@ -56,14 +67,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 
 import EmptyState from '@/components/common/EmptyState.vue';
 import ItemImageGallery from '@/components/common/ItemImageGallery.vue';
 import UserBrief from '@/components/common/UserBrief.vue';
+import WantedCategoryPicker from '@/components/common/WantedCategoryPicker.vue';
 import { ExchangeStatus } from '@/constants/exchange';
-import { ItemStatus } from '@/constants/item';
+import { ItemStatus, WANTED_CATEGORY_LIMIT } from '@/constants/item';
 import { useAuthStore } from '@/stores/authStore';
 import { useExchangeStore } from '@/stores/exchangeStore';
 import { useItemStore } from '@/stores/itemStore';
@@ -83,6 +95,16 @@ const ownAvailableItems = computed(() =>
 );
 const selectedItemId = ref('');
 const messageText = ref('我想用这件闲置与你交换，可以沟通时间和地点。');
+const wantedDraft = ref<string[]>([]);
+
+watchEffect(() => {
+  wantedDraft.value = [...(item.value?.wanted_categories ?? [])];
+});
+
+const saveWanted = async () => {
+  if (!item.value) return;
+  await itemStore.updateWantedCategories(item.value.id, wantedDraft.value);
+};
 
 const requestExchange = async () => {
   if (!authStore.currentUser || !item.value || !owner.value) return;

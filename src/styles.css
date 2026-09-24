@@ -207,6 +207,63 @@ main {
   color: #fffaf0;
 }
 
+.wanted-picker {
+  display: grid;
+  gap: 8px;
+  font-weight: 400;
+}
+
+.wanted-picker__hint {
+  color: color-mix(in oklch, var(--rs-text), transparent 42%);
+}
+
+.item-card__wanted,
+.item-card__matched,
+.detail-wanted {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.wanted-label,
+.matched-label {
+  color: color-mix(in oklch, var(--rs-text), transparent 35%);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.wanted-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  padding: 3px 9px;
+  background: color-mix(in oklch, var(--rs-accent), transparent 84%);
+  color: var(--rs-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.wanted-pill--hit {
+  background: var(--rs-accent);
+  color: #fffaf0;
+}
+
+.match-section {
+  display: grid;
+  gap: 16px;
+}
+
+.match-section__heading h2 {
+  margin: 0;
+}
+
+.match-section__heading p {
+  margin: 4px 0 0;
+  color: color-mix(in oklch, var(--rs-text), transparent 38%);
+}
+
 .waterfall {
   columns: 3 270px;
   column-gap: 18px;
